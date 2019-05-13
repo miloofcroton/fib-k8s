@@ -1,0 +1,36 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t miloofcroton/react-test -f ./client/Dockerfile.dev ./client
+  # easily, add more stuff to prepare for testing
+
+script:
+  - docker run -e "CI=true" miloofcroton/react-test npm run test
+  # easily, add more tests to run on other parts of the project
+
+after_success:
+  - docker build -t miloofcroton/full-stack-docker-client ./client
+  - docker build -t miloofcroton/full-stack-docker-server ./server
+  - docker build -t miloofcroton/full-stack-docker-nginx ./nginx
+  - docker build -t miloofcroton/full-stack-docker-worker ./worker
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push miloofcroton/full-stack-docker-client
+  - docker push miloofcroton/full-stack-docker-server
+  - docker push miloofcroton/full-stack-docker-nginx
+  - docker push miloofcroton/full-stack-docker-worker
+
+deploy:
+  provider: elasticbeanstalk
+  region: "us-west-2"
+  app: "full-stack-docker"
+  env: "FullStackDocker-env-1"
+  bucket_name: "elasticbeanstalk-us-west-2-484708856895"
+  bucket_path: "docker-test"
+  on:
+    branch: master
+  access_key_id:
+    secure: "$AWS_ACCESS_KEY"
+  secret_access_key:
+    secure: "$AWS_SECRET_KEY"
