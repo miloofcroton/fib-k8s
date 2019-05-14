@@ -30,3 +30,8 @@ spec:
               value: postgres
             - name: PGPORT
               value: '5432'
+            - name: PGPASSWORD # the name of the env variable used by the app
+              valueFrom:
+                secretKeyRef:
+                  name: pgpassword # what we called the secret in the kubectl command
+                  key: PGPASSWORD # the key in the secret
