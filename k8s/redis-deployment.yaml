@@ -6,15 +6,14 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: redis
+      component: redis
   template:
     metadata:
       labels:
-        app: redis
+        component: redis
     spec:
       containers:
         - name: redis
-          image: redis:latest
-          imagePullPolicy: Always
+          image: redis
           ports:
             - containerPort: 6379
