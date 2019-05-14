@@ -28,3 +28,9 @@
 
 - using `ingress-nginx` by `kubernetes` (github.com/kubernetes/ingress-nginx), not `kubernetes-ingress` by `nginx`
 - ran `travis encrypt-file service-account.json -r miloofcroton/full-stack-k8s` to encrypt gcloud secret
+- had to fix ~/./travis/config.yml as follows (note the last line, it was `.org`):
+  ```
+    repos:
+    miloofcroton/full-stack-k8s:
+        endpoint: https://api.travis-ci.com/
+  ```
