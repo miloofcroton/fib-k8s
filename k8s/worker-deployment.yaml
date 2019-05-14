@@ -17,6 +17,6 @@ spec:
           image: miloofcroton/full-stack-docker-worker
           env:
             - name: REDIS_HOST
-              value: redis-server
+              value: redis-cluster-ip-service
             - name: REDIS_PORT
               value: '6379'
