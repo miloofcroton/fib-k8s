@@ -34,3 +34,4 @@
     miloofcroton/full-stack-k8s:
         endpoint: https://api.travis-ci.com/
   ```
+- as part of the above fix, I had to re-login using `travis login --pro` instead of just `travis login`
