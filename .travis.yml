@@ -26,16 +26,16 @@ before_install:
   # selecting the kubernetes cluster by name in the project
   - gcloud container clusters get-credentials k8s-cluster
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  # - docker pull stephengrider/react-test:latest
-  # - docker build -t stephengrider/react-test -f ./client/Dockerfile.dev ./client
-  # - docker push stephengrider/react-test:latest
+  - docker pull miloofcroton/react-test:latest
+  - docker build -t miloofcroton/react-test -f ./client/Dockerfile.dev ./client
+  - docker push miloofcroton/react-test:latest
 
-# script:
-#   - echo tests pass
-#   # - docker run stephengrider/react-test npm test -- --coverage
+script:
+  - echo tests pass
+  - docker run -e "CI=true" miloofcroton/react-test npm run test
 
-# deploy:
-#   provider: script
-#   script: bash ./deploy.sh
-#   on:
-#     branch: master
+deploy:
+  provider: script
+  script: bash ./deploy.sh
+  on:
+    branch: master
