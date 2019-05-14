@@ -18,13 +18,13 @@ spec:
     # - host: k8s-multi.com
     - http:
         paths:
-          - path: /?(.*)
+          - path: /(.*)
           # - path: /
             backend:
               serviceName: client-cluster-ip-service
               servicePort: 3000
           # - path: /api/
-          - path: /api/?(.*)
+          - path: /api/(.*)
             backend:
               serviceName: server-cluster-ip-service
               servicePort: 5000
