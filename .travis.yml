@@ -1,13 +1,6 @@
 sudo: required
 services:
   - docker
-# cache:
-#   directories:
-#     - $HOME/google-cloud-sdk
-# env:
-#   global:
-#     - CLOUDSDK_CORE_DISABLE_PROMPTS=1
-#     - SHA=$(git rev-parse HEAD)
 before_install:
   - openssl aes-256-cbc -K $encrypted_da66aeabe838_key -iv $encrypted_da66aeabe838_iv -in service-account.json.enc -out service-account.json -d
   - if [ ! -d $HOME/google-cloud-sdk/bin ]; then
