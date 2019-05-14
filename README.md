@@ -1,4 +1,6 @@
-# fib-k8s
+# full-stack-k8s
+
+[![Build Status](https://travis-ci.com/miloofcroton/full-stack-k8s.svg?branch=master)](https://travis-ci.com/miloofcroton/full-stack-k8s)
 
 ## architecture
 
