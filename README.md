@@ -13,3 +13,6 @@
 - virtualbox
 - minikube
 
+## dev reqs
+
+- `minikube up`
