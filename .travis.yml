@@ -16,7 +16,6 @@ before_install:
     fi
   - source $HOME/google-cloud-sdk/path.bash.inc
   - gcloud components update kubectl
-  - gcloud version
   # passing auth info
   - gcloud auth activate-service-account --key-file service-account.json
   # selecting the project
@@ -26,9 +25,9 @@ before_install:
   # selecting the kubernetes cluster by name in the project
   - gcloud container clusters get-credentials k8s-cluster
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker pull miloofcroton/react-test:latest
+  # - docker pull miloofcroton/react-test:latest
   - docker build -t miloofcroton/react-test -f ./client/Dockerfile.dev ./client
-  - docker push miloofcroton/react-test:latest
+  # - docker push miloofcroton/react-test:latest
 
 script:
   - echo tests pass
