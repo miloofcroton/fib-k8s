@@ -5,13 +5,20 @@
 ![Project architecture](./architecture.png)
 
 
-## installation reqs:
+## installation reqs
 
 - brew (duh)
 - docker
 - kubectl
 - virtualbox
 - minikube
+- google cloud sdk cli
+
+## service reqs
+
+- travis
+- github
+- google cloud
 
 ## dev reqs
 
