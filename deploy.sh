@@ -20,6 +20,6 @@ docker push miloofcroton/full-stack-docker-worker:$SHA
 
 kubectl apply -f k8s
 
-kubectl set image deployments/server-deployment server=miloofcroton/full-stack-docker-server:$SHA --record
 kubectl set image deployments/client-deployment client=miloofcroton/full-stack-docker-client:$SHA --record
+kubectl set image deployments/server-deployment server=miloofcroton/full-stack-docker-server:$SHA --record
 kubectl set image deployments/worker-deployment worker=miloofcroton/full-stack-docker-worker:$SHA --record
