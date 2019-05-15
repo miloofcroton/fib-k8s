@@ -5,7 +5,8 @@
     "redis": "2.8.0",
     "cors": "2.8.4",
     "nodemon": "1.18.3",
-    "body-parser": "*"
+    "body-parser": "*",
+    "morgan": "^1.9.1"
   },
   "scripts": {
     "dev": "nodemon",
