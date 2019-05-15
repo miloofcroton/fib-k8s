@@ -22,14 +22,21 @@
 - github
 - google cloud
 
-## dev reqs
+## work flow
 
-- `minikube up`
-- `kubectl create secret generic pgpassword --from-literal PGPASSWORD=<password>`
+### local
 
-## notes
+    ```
+    minikube up
+    minikube addons enable ingress
+    kubectl create secret generic pgpassword --from-literal PGPASSWORD=<password>
+    ```
 
-- using `ingress-nginx` by `kubernetes` (github.com/kubernetes/ingress-nginx), not `kubernetes-ingress` by `nginx`
+see local dev fix at bottom, or change rewrite rules in ingress controller (there is an api mismatch with minikube at the moment)
+
+### google cloud
+
+#### creating setup
 
 - had to make travis use the new api. First, fix ~/.travis/config.yml as follows (note the last line, it was `.org`):
     ```
@@ -63,13 +70,26 @@
     helm install stable/nginx-ingress --name my-nginx --set rbac.create=true
     ```
 
+#### after setup
 
-## local dev fix
+- push to master (or merge PR)
+- travis automatically deploys to gcloud
 
-minikube addons disable ingress
+## notes
 
-curl -LO https://git.io/get_helm.sh
-chmod 700 get_helm.sh
-./get_helm.sh
+- using `ingress-nginx` by `kubernetes` (github.com/kubernetes/ingress-nginx), not `kubernetes-ingress` by `nginx`
 
-kubectl create clusterrolebinding add-on-cluster-admin --clusterrole=cluster-admin --serviceaccount=kube-system:default
+
+## local dev fix (work in progress)
+
+This is a work in progress to make minikube use the latest version of ingress-nginx via helm.
+
+    ```
+    minikube addons disable ingress
+
+    curl -LO https://git.io/get_helm.sh
+    chmod 700 get_helm.sh
+    ./get_helm.sh
+
+    kubectl create clusterrolebinding add-on-cluster-admin --clusterrole=cluster-admin --serviceaccount=kube-system:default
+    ```
