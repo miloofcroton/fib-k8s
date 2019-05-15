@@ -30,22 +30,28 @@
 ## notes
 
 - using `ingress-nginx` by `kubernetes` (github.com/kubernetes/ingress-nginx), not `kubernetes-ingress` by `nginx`
-- ran `travis encrypt-file service-account.json -r miloofcroton/full-stack-k8s` to encrypt gcloud secret
-- had to fix ~/./travis/config.yml as follows (note the last line, it was `.org`):
+
+- had to make travis use the new api. First, fix ~/.travis/config.yml as follows (note the last line, it was `.org`):
     ```
     repos:
     miloofcroton/full-stack-k8s:
         endpoint: https://api.travis-ci.com/
     ```
-- as part of the above fix, I had to re-login using `travis login --pro` instead of just `travis login`
-- ran this in the gcloud shell to set context before creating secret, and then create the actual secret
+  then, I had to re-login using `travis login --pro` instead of just `travis login`
+
+- ran this to encrypt gcloud secret:
+    ```
+    travis encrypt-file service-account.json -r miloofcroton/full-stack-k8s
+    ```
+
+- ran this in the gcloud shell to set context and then create the secret
     ```
     gcloud config set project full-stack-k8s
     gcloud config set compute/zone us-west1-a
     gcloud container clusters get-credentials k8s-cluster
     kubectl create secret generic pgpassword --from-literal PGPASSWORD=<password>
     ```
-- installed helm and tiller via https://helm.sh/docs/using_helm/#installing-helm, then create service account and cluster role binding, then assign cluster role binding to service account. This is all in the glcoud console.
+- installed helm and tiller via https://helm.sh/docs/using_helm/#installing-helm, then created service account and cluster role binding, then assigned cluster role binding to service account. This is all in the glcoud console.
 
     ```
     curl -LO https://git.io/get_helm.sh
