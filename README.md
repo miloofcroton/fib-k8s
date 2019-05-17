@@ -60,6 +60,8 @@
     kubectl create clusterrolebinding add-on-cluster-admin --clusterrole=cluster-admin --serviceaccount=kube-system:default
     ```
 
+    thought to self: I'm on 0.26.1 for minikube, and 1.0.1 is available. upgrade when you get a chance, and this might help with the RBAC issues.
+
 ### google cloud
 
 #### creating setup
