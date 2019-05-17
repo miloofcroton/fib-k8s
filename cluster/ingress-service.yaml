@@ -23,7 +23,7 @@ spec:
               servicePort: 3000
           - path: /api/?(.*)
             backend:
-              serviceName: server-cluster-ip-service
+              serviceName: api-cluster-ip-service
               servicePort: 5000
     - host: www.miloofcroton.io
       http:
@@ -34,5 +34,5 @@ spec:
               servicePort: 3000
           - path: /api/?(.*)
             backend:
-              serviceName: server-cluster-ip-service
+              serviceName: api-cluster-ip-service
               servicePort: 5000
