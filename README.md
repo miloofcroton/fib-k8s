@@ -22,6 +22,17 @@
 - github
 - google cloud
 
+## tech choices
+
+- `kubernetes` and `docker` (obv)
+- `google cloud`
+- `google domains`
+- `travis`
+- `helm`
+- `tiller`
+- `ingress-nginx` by `kubernetes` (github.com/kubernetes/ingress-nginx), not `kubernetes-ingress` by `nginx`
+- `cert-manager` by `jetstack`
+
 ## work flow
 
 ### local
@@ -69,6 +80,42 @@ see local dev fix at bottom, or change rewrite rules in ingress controller (ther
     helm init --service-account tiller --upgrade
     helm install stable/nginx-ingress --name my-nginx --set rbac.create=true
     ```
+- save helm to your google cloud console path (insert the following in ~/.bashrc), if you intend to access it this way, with an automatically scoped kubectl. I think it's fine for a couple commands, but it's way too slow if you need to do much work on it.
+
+    ```
+    export PATH="$(echo ~)/helm-v2.6.0/linux-amd64:$PATH"
+    ```
+- DNS setup
+
+Name | Type | TTL | Data
+---|---|---|---
+@ | A | 1h | 34.83.23.38
+www | CNAME | 1h | miloofcroton.io.
+
+- install `cert-manager` (via kubectl for now because the helm chart is buggy)
+
+    ```
+
+    # Create the namespace for cert-manager
+    kubectl create namespace cert-manager
+
+    # Label the cert-manager namespace to disable resource validation
+    kubectl label namespace cert-manager certmanager.k8s.io/disable-validation=true
+
+    # Resolve nuances with GKE permissions
+    kubectl create clusterrolebinding cluster-admin-binding \
+    --clusterrole=cluster-admin \
+    --user=$(gcloud config get-value core/account)
+
+    # Install the CustomResourceDefinitions and cert-manager itself
+
+    kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.7/deploy/manifests/cert-manager.yaml --validate=false
+    ```
+- deploy once, get info on the certificate, then add that info to the ingress-service file
+
+
+
+
 
 #### after setup
 
@@ -77,7 +124,7 @@ see local dev fix at bottom, or change rewrite rules in ingress controller (ther
 
 ## notes
 
-- using `ingress-nginx` by `kubernetes` (github.com/kubernetes/ingress-nginx), not `kubernetes-ingress` by `nginx`
+
 
 
 ## local dev fix (work in progress)
