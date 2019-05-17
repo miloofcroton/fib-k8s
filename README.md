@@ -151,7 +151,7 @@
 
 ## clean up
 
-## google cloud
+### google cloud
 
 - go to project selector/list
 - select project and click delete
