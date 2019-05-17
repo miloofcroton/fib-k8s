@@ -24,6 +24,6 @@ docker push miloofcroton/full-stack-docker-worker:$SHA
 
 kubectl apply -f cluster
 
-kubectl set image cluster/client-deployment client=miloofcroton/full-stack-docker-client:$SHA --record
-kubectl set image cluster/api-deployment api=miloofcroton/full-stack-docker-api:$SHA --record
-kubectl set image cluster/worker-deployment worker=miloofcroton/full-stack-docker-worker:$SHA --record
+kubectl set image deployments/client-deployment client=miloofcroton/full-stack-docker-client:$SHA --record
+kubectl set image deployments/api-deployment api=miloofcroton/full-stack-docker-api:$SHA --record
+kubectl set image deployments/worker-deployment worker=miloofcroton/full-stack-docker-worker:$SHA --record
