@@ -6,6 +6,10 @@
 
 ![Project architecture](./architecture.png)
 
+![final workloads](./final-workloads.png)
+
+![final services](./final-services.png)
+
 
 ## installation reqs
 
