@@ -74,6 +74,12 @@
     ```
   then, I had to re-login using `travis login --pro` instead of just `travis login`
 
+- create service account in gcloud. via cloud console:
+  - any service account id
+  - kubernetes engine admin
+  - key type: json
+  - download the json
+
 - ran this to encrypt gcloud secret:
     ```shell
     travis encrypt-file service-account.json -r miloofcroton/full-stack-k8s
@@ -137,6 +143,28 @@
 
 - push to master (or merge PR)
 - travis automatically deploys to gcloud
+
+
+## clean up
+
+## google cloud
+
+- go to project selector/list
+- select project and click delete
+- enter project id and click 'shut down'
+
+### local
+
+run the following:
+```shell
+minikube stop
+```
+
+run `docker ps` to get any existing containers, then run the following:
+```shell
+docker stop container_id
+```
+
 
 
 ## notes
