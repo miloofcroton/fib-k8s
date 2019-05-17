@@ -37,20 +37,35 @@
 
 ### local
 
-    ```
+- this will get minikube up and running, which lets you create nodes on your local machine.
+
+    ```shell
     minikube up
     minikube addons enable ingress
     kubectl create secret generic pgpassword --from-literal PGPASSWORD=<password>
     ```
 
-see local dev fix at bottom, or change rewrite rules in ingress controller (there is an api mismatch with minikube at the moment)
+    to use the existing actual codebase, you annoyingly have to do one of two things:
+
+    1. change the rewrite rules to not have regex, and remove the '$1' from the rewrite target
+    2. make minikube work with RBAC. in order to do this, you have to make minikube use the latest version of ingress-nginx via helm. I am still working on a solution for this, but see the script below for a start.
+
+    ```shell
+    minikube addons disable ingress
+
+    curl -LO https://git.io/get_helm.sh
+    chmod 700 get_helm.sh
+    ./get_helm.sh
+
+    kubectl create clusterrolebinding add-on-cluster-admin --clusterrole=cluster-admin --serviceaccount=kube-system:default
+    ```
 
 ### google cloud
 
 #### creating setup
 
 - had to make travis use the new api. First, fix ~/.travis/config.yml as follows (note the last line, it was `.org`):
-    ```
+    ```yaml
     repos:
     miloofcroton/full-stack-k8s:
         endpoint: https://api.travis-ci.com/
@@ -58,12 +73,12 @@ see local dev fix at bottom, or change rewrite rules in ingress controller (ther
   then, I had to re-login using `travis login --pro` instead of just `travis login`
 
 - ran this to encrypt gcloud secret:
-    ```
+    ```shell
     travis encrypt-file service-account.json -r miloofcroton/full-stack-k8s
     ```
 
 - ran this in the gcloud shell to set context and then create the secret
-    ```
+    ```shell
     gcloud config set project full-stack-k8s
     gcloud config set compute/zone us-west1-a
     gcloud container clusters get-credentials k8s-cluster
@@ -71,7 +86,7 @@ see local dev fix at bottom, or change rewrite rules in ingress controller (ther
     ```
 - installed helm and tiller via https://helm.sh/docs/using_helm/#installing-helm, then created service account and cluster role binding, then assigned cluster role binding to service account. This is all in the glcoud console.
 
-    ```
+    ```shell
     curl -LO https://git.io/get_helm.sh
     chmod 700 get_helm.sh
     ./get_helm.sh
@@ -82,20 +97,20 @@ see local dev fix at bottom, or change rewrite rules in ingress controller (ther
     ```
 - save helm to your google cloud console path (insert the following in ~/.bashrc), if you intend to access it this way, with an automatically scoped kubectl. I think it's fine for a couple commands, but it's way too slow if you need to do much work on it.
 
-    ```
+    ```shell
     export PATH="$(echo ~)/helm-v2.6.0/linux-amd64:$PATH"
     ```
 - DNS setup
 
-Name | Type | TTL | Data
----|---|---|---
-@ | A | 1h | 34.83.23.38
-www | CNAME | 1h | miloofcroton.io.
+    Name | Type | TTL | Data
+    ---|---|---|---
+    @ | A | 1h | 34.83.23.38
+    www | CNAME | 1h | miloofcroton.io.
+
 
 - install `cert-manager` (via kubectl for now because the helm chart is buggy)
 
-    ```
-
+    ```shell
     # Create the namespace for cert-manager
     kubectl create namespace cert-manager
 
@@ -111,9 +126,8 @@ www | CNAME | 1h | miloofcroton.io.
 
     kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.7/deploy/manifests/cert-manager.yaml --validate=false
     ```
+
 - deploy once, get info on the certificate, then add that info to the ingress-service file
-
-
 
 
 
@@ -122,22 +136,8 @@ www | CNAME | 1h | miloofcroton.io.
 - push to master (or merge PR)
 - travis automatically deploys to gcloud
 
+
 ## notes
 
 
-
-
-## local dev fix (work in progress)
-
-This is a work in progress to make minikube use the latest version of ingress-nginx via helm.
-
-    ```
-    minikube addons disable ingress
-
-    curl -LO https://git.io/get_helm.sh
-    chmod 700 get_helm.sh
-    ./get_helm.sh
-
-    kubectl create clusterrolebinding add-on-cluster-admin --clusterrole=cluster-admin --serviceaccount=kube-system:default
-    ```
 
