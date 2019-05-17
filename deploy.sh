@@ -22,7 +22,7 @@ docker push miloofcroton/full-stack-docker-client:$SHA
 docker push miloofcroton/full-stack-docker-api:$SHA
 docker push miloofcroton/full-stack-docker-worker:$SHA
 
-kubectl apply -f cluster
+kubectl apply -f ./cluster
 
 kubectl set image cluster/client-deployment client=miloofcroton/full-stack-docker-client:$SHA --record
 kubectl set image cluster/api-deployment api=miloofcroton/full-stack-docker-api:$SHA --record
